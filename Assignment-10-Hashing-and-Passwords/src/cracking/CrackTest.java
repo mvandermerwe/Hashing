@@ -67,5 +67,23 @@ public class CrackTest {
 		System.out.println(cracked.toString());
 		assertEquals("[[ a : 0cc175b9c0f1b6a831c399e269772661 ], [ cat : d077f244def8a70e5ea758bd8352fcd8 ], [ and : be5d5d37542d75f93a87094459f76678 ], [ dog : 06d80eb0c50b49a509b49f2424e8c805 ], [ went : dd22b70914cd2243e055d2e118741186 ], [ for : d55669822f1a8cf72ec1911e462a54eb ], [ ride : 059763450f095b4973b450eaf58399c1 ], [ on : ed2b5c0139cec8ad2873829dc1117d50 ], [ green : 9f27410725ab8cc8854a2769c7a516b8 ], [ van : 957d2fa52c19a5aff4ccf5d9a959adab ]]", cracked.toString());
 	}
+	
+	/**
+	 * Tests the multi_thread_brute_force_attack method to make
+	 * sure that it can solve all of the given hashes and
+	 * returns the correct Array of strings.
+	 */
+	@Test
+	public void testBruteForceAttack() {
+		ArrayList<String> array = Crack.read_file_into_array("Resources/a_few_hashes");
+		ArrayList<ArrayList<String>> cracked = Crack.multi_thread_brute_force_attack(5, array);
+		String string = "";
+		for(ArrayList<String> array2 :cracked){
+			string += array2.toString();
+		System.out.print(array2.toString());
+		}
+		assertEquals("[[ and : be5d5d37542d75f93a87094459f76678 ]][][[ cat : d077f244def8a70e5ea758bd8352fcd8 ]][[ dog : 06d80eb0c50b49a509b49f2424e8c805 ]][][[ for : d55669822f1a8cf72ec1911e462a54eb ]][[ green : 9f27410725ab8cc8854a2769c7a516b8 ]][][][][][][][][[ on : ed2b5c0139cec8ad2873829dc1117d50 ]][][][[ ride : 059763450f095b4973b450eaf58399c1 ]][][][][[ van : 957d2fa52c19a5aff4ccf5d9a959adab ]][[ went : dd22b70914cd2243e055d2e118741186 ]][][][]",string);
+		
+	}
 
 }

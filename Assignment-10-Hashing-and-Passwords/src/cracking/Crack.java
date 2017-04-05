@@ -209,8 +209,8 @@ public class Crack {
 
 				@Override
 				public void run() {
-					System.out.println("working on permutation " + temp);
-					brute_force_attack(hashes, successes.get(temp), new StringBuilder("" + (char) ('a' + temp + 1)), 1,
+					System.out.println("working on permutation " + (temp + 1));
+					brute_force_attack(hashes, successes.get(temp), new StringBuilder("" + (char) ('a' + temp )), 2,
 							max_permutation_length);
 				}
 			});
@@ -227,7 +227,7 @@ public class Crack {
 		long total_time = System.nanoTime() - start_time;
 		System.out.println("done: ( " + (total_time / 1000000000.0) + " seconds )");
 
-		return null;
+		return successes;
 
 	}
 
