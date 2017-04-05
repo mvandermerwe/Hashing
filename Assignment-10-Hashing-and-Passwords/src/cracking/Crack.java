@@ -163,7 +163,14 @@ public class Crack {
 	 *         d077f244def8a70e5ea758bd8352fcd8AB3293292CEF2342ACD32342")
 	 */
 	static public ArrayList<String> dictionary_attack(ArrayList<String> dictionary, Collection<String> hashes) {
-		return null;
+		ArrayList<String> successes = new ArrayList<>();
+		for(String word:dictionary){
+		String hashed = hash(word).toString();
+		if(hashes.contains(hashed)) {
+			successes.add("[ " + word + " : " + hashed + " ]");
+		}
+		}
+		return successes;
 	}
 
 	/**
