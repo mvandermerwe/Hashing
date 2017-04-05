@@ -139,6 +139,11 @@ public class Crack {
 			} else {
 				// recurse towards depth of the word.
 				brute_force_attack(hashes, successes, so_far, depth + 1, max_length);
+				// Hash and test.
+				String hashed = hash(so_far.toString()).toString();
+				if(hashes.contains(hashed)) {
+					successes.add("[ " + so_far + " : " + hashed + " ]");
+				}
 				// Delete last one so we can add the next letter.
 				so_far.deleteCharAt(so_far.length() - 1);
 			}
@@ -219,7 +224,7 @@ public class Crack {
 
 	}
 
-	private static StringBuffer hash(String value) {
+	static StringBuffer hash(String value) {
 		MessageDigest hash_generator = null;
 		try {
 			hash_generator = java.security.MessageDigest.getInstance("MD5");
