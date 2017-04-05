@@ -28,12 +28,20 @@ import hash_tables.Hash_Map;
  */
 public class Crack {
 
-	private static Hash_Map<String, String> hashMap;
-
-	static public ArrayList<String> read_file_into_array(String file_name) {
+	/**
+	 * Reads strings from a file to an Array List. General use in context is to
+	 * store our Hash passwords and our dictionaries.
+	 * 
+	 * @param file_name
+	 *            - file where words are located. NOTE: each word must be on
+	 *            it's own line.
+	 * @return - returns the words from the txt file in an ArrayList.
+	 */
+	public static ArrayList<String> read_file_into_array(String file_name) {
 		BufferedReader bufferedReader = null;
 
 		try {
+			// Create a buffered reader to read from the file.
 			bufferedReader = new BufferedReader(new FileReader(file_name));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
@@ -57,10 +65,21 @@ public class Crack {
 		return passwords;
 	}
 
-	static public HashSet<String> read_file_into_hash_set(String file_name) {
+	/**
+	 * Reads strings from a file to an Hash Set - used for comparison between
+	 * array list and hash set. General use in context is to store our Hash
+	 * passwords and our dictionaries.
+	 * 
+	 * @param file_name
+	 *            - file where words are located. NOTE: each word must be on
+	 *            it's own line.
+	 * @return - returns the words from the txt file in an ArrayList.
+	 */
+	public static HashSet<String> read_file_into_hash_set(String file_name) {
 		BufferedReader bufferedReader = null;
 
 		try {
+			// Create a buffered reader to read info from the file.
 			bufferedReader = new BufferedReader(new FileReader(new File(file_name)));
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
@@ -97,7 +116,7 @@ public class Crack {
 	 *         (e.g., [ "cat :
 	 *         d077f244def8a70e5ea758bd8352fcd8AB3293292CEF2342ACD32342" ])
 	 */
-	static public ArrayList<String> brute_force_attack(Collection<String> hashes, int max_length) {
+	public static ArrayList<String> brute_force_attack(Collection<String> hashes, int max_length) {
 		ArrayList<String> successes = new ArrayList<>();
 		// Let the helper handle the rest.
 		brute_force_attack(hashes, successes, new StringBuilder(), 1, max_length);
@@ -122,7 +141,7 @@ public class Crack {
 	 * @param max_length
 	 *            - the length of the word we are trying to crack.
 	 */
-	static public void brute_force_attack(Collection<String> hashes, ArrayList<String> successes, StringBuilder so_far,
+	public static void brute_force_attack(Collection<String> hashes, ArrayList<String> successes, StringBuilder so_far,
 			int depth, int max_length) {
 		for (char letter = 'a'; letter <= 'z'; letter++) {
 			// Add a letter at our current position.
@@ -131,7 +150,7 @@ public class Crack {
 			if (depth == max_length) {
 				// Hash and test.
 				String hashed = hash(so_far.toString()).toString();
-				if(hashes.contains(hashed)) {
+				if (hashes.contains(hashed)) {
 					successes.add("[ " + so_far + " : " + hashed + " ]");
 				}
 				// Delete last one so we can add the next letter.
@@ -141,7 +160,7 @@ public class Crack {
 				brute_force_attack(hashes, successes, so_far, depth + 1, max_length);
 				// Hash and test.
 				String hashed = hash(so_far.toString()).toString();
-				if(hashes.contains(hashed)) {
+				if (hashes.contains(hashed)) {
 					successes.add("[ " + so_far + " : " + hashed + " ]");
 				}
 				// Delete last one so we can add the next letter.
@@ -162,13 +181,15 @@ public class Crack {
 	 *         (e.g., "cat :
 	 *         d077f244def8a70e5ea758bd8352fcd8AB3293292CEF2342ACD32342")
 	 */
-	static public ArrayList<String> dictionary_attack(ArrayList<String> dictionary, Collection<String> hashes) {
+	public static ArrayList<String> dictionary_attack(ArrayList<String> dictionary, Collection<String> hashes) {
 		ArrayList<String> successes = new ArrayList<>();
-		for(String word:dictionary){
-		String hashed = hash(word).toString();
-		if(hashes.contains(hashed)) {
-			successes.add("[ " + word + " : " + hashed + " ]");
-		}
+		for (String word : dictionary) {
+			// For every word in the dictionary, hash it.
+			String hashed = hash(word).toString();
+			if (hashes.contains(hashed)) {
+				// If we find a match, add it to the success collection.
+				successes.add("[ " + word + " : " + hashed + " ]");
+			}
 		}
 		return successes;
 	}
@@ -195,28 +216,34 @@ public class Crack {
 		int count = 0;
 		int AVAILABLE_THREADS = 8;
 
+		// We let thread pool handle threading.
 		ExecutorService thread_pool = Executors.newFixedThreadPool(AVAILABLE_THREADS);
 		ArrayList<ArrayList<String>> successes = new ArrayList<ArrayList<String>>();
 
 		for (int i = 0; i < 26; i++) {
+			// Create an arraylist to store successful cracks for each letter.
 			successes.add(new ArrayList<>());
 		}
 
 		for (int i = 0; i < 26; i++) {
 			int temp = i;
 
+			// Run thread w/ brute force FOR SPECIFIED LETTER.
 			thread_pool.execute(new Runnable() {
 
 				@Override
 				public void run() {
-					System.out.println("working on permutation " + (temp + 1));
-					brute_force_attack(hashes, successes.get(temp), new StringBuilder("" + (char) ('a' + temp )), 2,
+					System.out.println("working on permutation " + (char) ('a' + temp));
+					// Depth = 2 -> b/c we start on the second letter, first is
+					// provided for each thread.
+					brute_force_attack(hashes, successes.get(temp), new StringBuilder("" + (char) ('a' + temp)), 2,
 							max_permutation_length);
 				}
 			});
 			;
 		}
 
+		// Clean up and timing.
 		try {
 			thread_pool.shutdown();
 			thread_pool.awaitTermination(1, TimeUnit.DAYS);
@@ -231,7 +258,14 @@ public class Crack {
 
 	}
 
-	static StringBuffer hash(String value) {
+	/**
+	 * Hashes provided word using MD5 hashing.
+	 * 
+	 * @param value
+	 *            - String value to be hashed.
+	 * @return - hashed value of the string.
+	 */
+	public static StringBuffer hash(String value) {
 		MessageDigest hash_generator = null;
 		try {
 			hash_generator = java.security.MessageDigest.getInstance("MD5");

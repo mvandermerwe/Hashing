@@ -61,6 +61,8 @@ public class CrackTest {
 	 */
 	@Test
 	public void testDictionary(){
+		//Crack cocaine = new Crack();// NM
+		
 		ArrayList<String> hashes = Crack.read_file_into_array("Resources/a_few_hashes");
 		ArrayList<String> dictionary = Crack.read_file_into_array("Resources/a_few_words");
 		ArrayList<String> cracked = Crack.dictionary_attack(dictionary, hashes);
