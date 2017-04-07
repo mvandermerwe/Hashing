@@ -22,7 +22,11 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	protected int num_of_entries;
 	int collisions;
 	boolean resizeable;
-	
+	long total_inserting_time = 0;
+	long total_hashing_time = 0;
+	int find_counter = 0;
+	int hash_counter = 0;
+	long total_finding_time = 0;
 	/**
 	 * Hash Table Chaining Constructor
 	 * 
@@ -36,14 +40,13 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		this.num_of_entries = 0;
 		collisions = 0;
 		resizeable=true;
-		for(int i = 0; i<capacity; i++){
-			array.add(new LinkedList<Pair<KeyType,ValueType>>());
-		}
 	}
 	
 	private void init_table() {
-		// TODO Auto-generated method stub
-		
+		array.clear();
+		for(int i = 0; i<capacity; i++){
+			array.add(new LinkedList<Pair<KeyType,ValueType>>());
+		}
 	}
 	
 	public int wrap(int position){
@@ -62,11 +65,18 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	 */
 	@Override
 	public void insert(KeyType key, ValueType value) {
-		Pair pair = new Pair(key, value);
+		long insert_start_time = System.nanoTime();
+		if(resizeable && (double) num_of_entries/capacity >=5){
+			resize(Primes.next_prime(capacity *2));
+		}
+		long hash_start_time = System.nanoTime();
+		int index = key.hashCode();
+		long hash_end_time = System.nanoTime();
+		total_hashing_time += (hash_end_time-hash_start_time);
+		Pair<KeyType,ValueType> pair = new Pair<KeyType,ValueType>(key, value);
 		num_of_entries++;
-		if(array.get(wrap(key.hashCode()))!=null){
-			
-		for(Pair<KeyType,ValueType> newpair: array.get(wrap(key.hashCode()))){
+		if(array.get(wrap(index))!=null){
+		for(Pair<KeyType,ValueType> newpair: array.get(wrap(index))){
 			collisions++;
 			if(newpair.equals(pair)){
 				newpair=pair;
@@ -74,10 +84,10 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 				return;
 			}
 		}
-		
 		}
-		array.get(wrap(key.hashCode())).add(pair);
-		
+		array.get(wrap(index)).add(pair);
+		long insert_end_time = System.nanoTime();
+		total_inserting_time += (insert_end_time-insert_start_time);
 	}
 	/**
 	 * This method checks if the array already has the 
@@ -88,14 +98,25 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	 */
 	@Override
 	public ValueType find(KeyType key) {
-		if(array.get(wrap(key.hashCode()))!=null){
-			for(Pair<KeyType,ValueType> newpair: array.get(wrap(key.hashCode()))){
+		long find_start_time = System.nanoTime();
+		find_counter++;
+		long hash_start_time = System.nanoTime();
+		int index = key.hashCode();
+		hash_counter++;
+		long hash_end_time = System.nanoTime();
+		total_hashing_time += (hash_end_time-hash_start_time);
+		if(array.get(wrap(index))!=null){
+			for(Pair<KeyType,ValueType> newpair: array.get(wrap(index))){
 				collisions++;
 				if(newpair.key.equals(key)){
+					long find_end_time = System.nanoTime();
+					total_finding_time += (find_end_time-find_start_time);
 					return newpair.value;
 				}
 			}
 		}
+		long find_end_time = System.nanoTime();
+		total_finding_time += (find_end_time-find_start_time);
 		return null;
 	}
 	
@@ -140,6 +161,23 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		resizeable=status;
 
 	}
+	
+	/**
+	 * Fill in calculations to show some of the stats about the hash table
+	 */
+	public String toString() {
+		String result = new String();
+		ArrayList<Double> stats = print_stats();
+		result = "------------ Hash Table Info ------------\n" + "  Average collisions: " + stats.get(0)
+				+ "  Average Hash Function Time: " + total_hashing_time/hash_counter + " Average Insertion Time: " +
+				total_inserting_time/num_of_entries + "  Average Find Time: " + total_finding_time/find_counter 
+				+ "  Percent filled : " + 100*num_of_entries/(5*capacity) + "  Size of Table  : "+ stats.get(2) + "  Elements       : "
+				+ stats.get(1) + "-----------------------------------------\n";
+
+		return result;
+
+	}
+
 
 	/**
 	 * Returns an array of doubles containing the average collisions,

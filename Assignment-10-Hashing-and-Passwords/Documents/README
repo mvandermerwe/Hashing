@@ -26,6 +26,8 @@ Design Decisions :
 	  
 	- We used a wrap method to make sure the indices wrap around the array for the 
 	Hash_Tables.
+	
+	-We used Bertrand's postulate to make our next_prime method more efficient.
 	  
 Notes To the TA: 
 	-We decided to convert everything to strings to simplify our testing of Crack.java.
