@@ -33,7 +33,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	private int operations = 0;
 
 	// Whether our table can grow.
-	private boolean resizeable;
+	private boolean resizeable = true;
 
 	/**
 	 * Hash Table Constructor
@@ -64,7 +64,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 		this.operations++;
 
 		// Check if we need to resize and resize if necessary.
-		if (this.resizeable && this.num_of_entries > (.5 * this.capacity)) {
+		if (this.resizeable && this.num_of_entries > (int) (.5 * this.capacity)) {
 			resize(Primes.next_prime(2 * this.capacity));
 		}
 
@@ -73,9 +73,17 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 		int index = key.hashCode();
 
 		// Continue to probe until we find an empty bucket or the same key.
-		while (table.get(wrapIndex(index)) != null || !table.get(wrapIndex(index)).key.equals(key)) {
+		// Lambda expression: if at index is null, add there, if not, check if
+		// our key matches the key, if not, continue probing, if yes, replace
+		// there.
+		while ((table.get(wrapIndex(index)) == null) ? false : !table.get(wrapIndex(index)).key.equals(key)) {
 			this.collisions++;
 			index = probe(index);
+
+			// If probe count reaches capacity, no more room in the table.
+			if (this.probeCount == this.capacity) {
+				return;
+			}
 		}
 
 		// Resets probing scaling num.
@@ -121,9 +129,19 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 		this.operations++;
 
 		int index = key.hashCode();
-		while (table.get(wrapIndex(index)) == null || !table.get(wrapIndex(index)).key.equals(key)) {
-			this.collisions++;
+		// Lambda expression: if null, keep probing, if not null, check if our
+		// key is there, if yes grab, otherwise keep probing.
+		while ((table.get(wrapIndex(index)) == null) ? true : !table.get(wrapIndex(index)).key.equals(key)) {
+			if (table.get(wrapIndex(index)) != null) {
+				this.collisions++;
+			}
 			index = probe(index);
+
+			// If probe count reaches capacity, the provided element doesn't
+			// exist in the table.
+			if (this.probeCount == this.capacity) {
+				return null;
+			}
 		}
 
 		Pair<KeyType, ValueType> pair = table.get(wrapIndex(index));
@@ -168,9 +186,9 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	public String toString() {
 		String result = new String();
 		result = "------------ Hash Table Info ------------\n" + "  Average collisions: "
-				+ "  Average Hash Function Time: " + "  Average Insertion Time: " + "  Average Find Time: "
-				+ "  Percent filled : " + "  Size of Table  : " + "  Elements       : "
-				+ "-----------------------------------------\n";
+				+ (this.collisions / this.operations) + "  Average Hash Function Time: " + ""
+				+ "  Average Insertion Time: " + "  Average Find Time: " + "  Percent filled : " + "  Size of Table  : "
+				+ "  Elements       : " + "-----------------------------------------\n";
 
 		return result;
 
@@ -199,8 +217,8 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 		// 2) set the number of elements in the hash table to 0
 
 		table = new ArrayList<Pair<KeyType, ValueType>>(capacity);
-		for (int index = 0; index < table.size(); index++) {
-			table.set(index, null);
+		for (int index = 0; index < capacity; index++) {
+			table.add(index, null);
 		}
 	}
 
