@@ -208,9 +208,10 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 			array.add(new LinkedList<Pair<KeyType,ValueType>>());
 		}
 		for(int i = 0; i<temparray.size();i++){
-			array.set(i, temparray.get(i));
+			for(int j = 0; j<temparray.get(i).size(); j++){
+				Pair<KeyType,ValueType> temp_pair = temparray.get(i).get(j);
+				this.insert(temp_pair.key, temp_pair.value);
+			}
 		}
-		
 	}
-
 }
