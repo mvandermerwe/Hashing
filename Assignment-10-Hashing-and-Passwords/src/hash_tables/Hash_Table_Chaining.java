@@ -71,6 +71,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		}
 		long hash_start_time = System.nanoTime();
 		int index = key.hashCode();
+		hash_counter++;
 		long hash_end_time = System.nanoTime();
 		total_hashing_time += (hash_end_time-hash_start_time);
 		Pair<KeyType,ValueType> pair = new Pair<KeyType,ValueType>(key, value);
@@ -168,11 +169,11 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	public String toString() {
 		String result = new String();
 		ArrayList<Double> stats = print_stats();
-		result = "------------ Hash Table Info ------------\n" + "  Average collisions: " + stats.get(0)
-				+ "  Average Hash Function Time: " + total_hashing_time/hash_counter + " Average Insertion Time: " +
-				total_inserting_time/num_of_entries + "  Average Find Time: " + total_finding_time/find_counter 
-				+ "  Percent filled : " + 100*num_of_entries/(5*capacity) + "  Size of Table  : "+ stats.get(2) + "  Elements       : "
-				+ stats.get(1) + "-----------------------------------------\n";
+		result = "------------ Hash Table Info ------------\n" + "Average collisions: " + stats.get(0)
+				+ "\nAverage Hash Function Time: " + total_hashing_time/hash_counter + "\nAverage Insertion Time: " +
+				total_inserting_time/num_of_entries + "\nAverage Find Time: " + total_finding_time/find_counter 
+				+ "\nPercent filled : " + 100*num_of_entries/(5*capacity) + "\nSize of Table  : "+ stats.get(2) + "\nElements       : "
+				+ stats.get(1) + "\n"+ "-----------------------------------------\n";
 
 		return result;
 
