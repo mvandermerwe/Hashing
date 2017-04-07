@@ -9,8 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author markvandermerwe
- *
+ * Test the functionality of all of our Hash_Map implementations.
+ * 
+ * @author Mark Van der Merwe and Andrew Haas
  */
 public class Hash_Maps_Test {
 
@@ -55,10 +56,60 @@ public class Hash_Maps_Test {
 		hashMap.insert("three", 19);
 		hashMap.insert("four", -2);
 		hashMap.insert("five", 3);
-		
+
+		// Make sure five elements have been added.
 		assertEquals(5, hashMap.size());
-		assertEquals(19, (int) hashMap.find("three"));
-		assertEquals(-2, (int) hashMap.find("two"));
+	}
+
+	@Test
+	public void testFind() {
+		hashMap.insert("one", 1);
+		hashMap.insert("two", 6);
+		hashMap.insert("three", 19);
+		hashMap.insert("four", -2);
+		hashMap.insert("five", 3);
+
+		// Test some generic finds.
+		assertEquals(1, (int) hashMap.find("one"));
+		assertEquals(-2, (int) hashMap.find("four"));
+		assertEquals(3, (int) hashMap.find("five"));
+
+		// Test finding something that isn't there.
+		assertEquals(null, hashMap.find("nothere"));
+	}
+
+	@Test
+	public void testClear() {
+		hashMap.insert("one", 1);
+		hashMap.insert("two", 6);
+		hashMap.insert("three", 19);
+		hashMap.insert("four", -2);
+		hashMap.insert("five", 3);
+
+		// Check size before clear.
+		assertEquals(5, hashMap.size());
+
+		hashMap.clear();
+
+		// Check size to make sure we cleared values.
+		assertEquals(0, hashMap.size());
+	}
+
+	@Test
+	public void testResize() {
+		hashMap.resize(Primes.next_prime(48));
+
+		// resize then check capacity.
+		assertEquals(Primes.next_prime(48), hashMap.capacity());
+	}
+
+	@Test
+	public void testStartsResize() {
+		for (int index = 0; index < 20; index++) {
+			hashMap.insert(String.valueOf(index), index);
+		}
+
+		assertEquals(Primes.next_prime(58), hashMap.capacity());
 	}
 
 }
