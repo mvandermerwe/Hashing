@@ -66,7 +66,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	@Override
 	public void insert(KeyType key, ValueType value) {
 		long insert_start_time = System.nanoTime();
-		if(resizeable && (double) num_of_entries/capacity >=5){
+		if(resizeable && (double)num_of_entries/capacity >=5){
 			resize(Primes.next_prime(capacity *2));
 		}
 		long hash_start_time = System.nanoTime();
@@ -75,9 +75,8 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		total_hashing_time += (hash_end_time-hash_start_time);
 		Pair<KeyType,ValueType> pair = new Pair<KeyType,ValueType>(key, value);
 		num_of_entries++;
-		if(array.get(wrap(index))!=null){
+		if(array.get(wrap(index))!=null && this.find(key)!=null){
 		for(Pair<KeyType,ValueType> newpair: array.get(wrap(index))){
-			collisions++;
 			if(newpair.equals(pair)){
 				newpair=pair;
 				num_of_entries--;
@@ -109,6 +108,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 			for(Pair<KeyType,ValueType> newpair: array.get(wrap(index))){
 				collisions++;
 				if(newpair.key.equals(key)){
+					collisions--;
 					long find_end_time = System.nanoTime();
 					total_finding_time += (find_end_time-find_start_time);
 					return newpair.value;
@@ -207,6 +207,12 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		for(int i = 0; i<capacity; i++){
 			array.add(new LinkedList<Pair<KeyType,ValueType>>());
 		}
+		num_of_entries = 0;
+		total_inserting_time = 0;
+		total_hashing_time = 0;
+		find_counter = 0;
+		hash_counter = 0;
+		total_finding_time = 0;
 		for(int i = 0; i<temparray.size();i++){
 			for(int j = 0; j<temparray.get(i).size(); j++){
 				Pair<KeyType,ValueType> temp_pair = temparray.get(i).get(j);
