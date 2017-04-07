@@ -16,17 +16,24 @@ import static hash_tables.Primes.next_prime;
  */
 public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<KeyType, ValueType> {
 
-	/** comment me */
+	// Backing array list of pairs that holds the key and value at its hashed
+	// key.
 	private ArrayList<Pair<KeyType, ValueType>> table;
 
+	// Table info.
+	// Capacity - size of backing array.
 	protected int capacity;
+	// Num of entries - number of entries in actual table.
 	protected int num_of_entries;
+	// Counter to increase probing when necessary.
+	protected int probeCount = 0;
+
+	// Stats on collisions and total ops.
 	private int collisions = 0;
 	private int operations = 0;
 
+	// Whether our table can grow.
 	private boolean resizeable;
-	
-	protected int probeCount = 0;
 
 	/**
 	 * Hash Table Constructor
@@ -70,7 +77,8 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 			this.collisions++;
 			index = probe(index);
 		}
-		
+
+		// Resets probing scaling num.
 		this.probeCount = 0;
 
 		// Set pair will either replace or instantiate at this position.
@@ -78,6 +86,13 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 		this.num_of_entries++;
 	}
 
+	/**
+	 * Helper method that wraps provided index to the capacity of the table.
+	 * 
+	 * @param index
+	 *            - index to wrap.
+	 * @return - wrapped index.
+	 */
 	public int wrapIndex(int index) {
 		return index % this.capacity;
 	}
@@ -211,6 +226,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 		ArrayList<Pair<KeyType, ValueType>> old = table;
 
 		// Set new size and reset stats.
+		// New capacity determined by Primes class.
 		this.capacity = new_size;
 		this.reset_stats();
 

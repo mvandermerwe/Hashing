@@ -3,6 +3,7 @@ package cracking;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.junit.Test;
 
@@ -36,13 +37,14 @@ public class CrackTest {
 	 * sure that it can solve all of the given hashes and
 	 * returns the correct Array of strings.
 	 */
-//	@Test
-//	public void testBruteForceAttack() {
-//		ArrayList<String> array = crack.read_file_into_array("Resources/a_few_hashes");
-//		ArrayList<String> cracked = crack.brute_force_attack(array, 5);
-//		System.out.println(cracked.toString());
-//		assertEquals("[[ and : be5d5d37542d75f93a87094459f76678 ], [ a : 0cc175b9c0f1b6a831c399e269772661 ], [ cat : d077f244def8a70e5ea758bd8352fcd8 ], [ dog : 06d80eb0c50b49a509b49f2424e8c805 ], [ for : d55669822f1a8cf72ec1911e462a54eb ], [ green : 9f27410725ab8cc8854a2769c7a516b8 ], [ on : ed2b5c0139cec8ad2873829dc1117d50 ], [ ride : 059763450f095b4973b450eaf58399c1 ], [ van : 957d2fa52c19a5aff4ccf5d9a959adab ], [ went : dd22b70914cd2243e055d2e118741186 ]]",cracked.toString());
-//	}
+	@Test
+	public void testBruteForceAttack() {
+		HashSet<String> array = Crack.read_file_into_hash_set("Resources/a_few_hashes");
+		ArrayList<String> cracked = Crack.brute_force_attack(array, 5);
+		System.out.println(cracked.toString());
+		// Outcomes checked w/ reverse MD5 tools.
+		assertEquals("[[ and : be5d5d37542d75f93a87094459f76678 ], [ a : 0cc175b9c0f1b6a831c399e269772661 ], [ cat : d077f244def8a70e5ea758bd8352fcd8 ], [ dog : 06d80eb0c50b49a509b49f2424e8c805 ], [ for : d55669822f1a8cf72ec1911e462a54eb ], [ green : 9f27410725ab8cc8854a2769c7a516b8 ], [ on : ed2b5c0139cec8ad2873829dc1117d50 ], [ ride : 059763450f095b4973b450eaf58399c1 ], [ van : 957d2fa52c19a5aff4ccf5d9a959adab ], [ went : dd22b70914cd2243e055d2e118741186 ]]",cracked.toString());
+	}
 	/**
 	 * Tests the hash method to make sure that it
 	 * correctly hashes the string.
@@ -67,6 +69,7 @@ public class CrackTest {
 		ArrayList<String> dictionary = Crack.read_file_into_array("Resources/a_few_words");
 		ArrayList<String> cracked = Crack.dictionary_attack(dictionary, hashes);
 		System.out.println(cracked.toString());
+		// Outcomes checked w/ reverse MD5 tools.
 		assertEquals("[[ a : 0cc175b9c0f1b6a831c399e269772661 ], [ cat : d077f244def8a70e5ea758bd8352fcd8 ], [ and : be5d5d37542d75f93a87094459f76678 ], [ dog : 06d80eb0c50b49a509b49f2424e8c805 ], [ went : dd22b70914cd2243e055d2e118741186 ], [ for : d55669822f1a8cf72ec1911e462a54eb ], [ ride : 059763450f095b4973b450eaf58399c1 ], [ on : ed2b5c0139cec8ad2873829dc1117d50 ], [ green : 9f27410725ab8cc8854a2769c7a516b8 ], [ van : 957d2fa52c19a5aff4ccf5d9a959adab ]]", cracked.toString());
 	}
 	
@@ -76,7 +79,7 @@ public class CrackTest {
 	 * returns the correct Array of strings.
 	 */
 	@Test
-	public void testBruteForceAttack() {
+	public void testMultiThreadBruteForceAttack() {
 		ArrayList<String> array = Crack.read_file_into_array("Resources/a_few_hashes");
 		ArrayList<ArrayList<String>> cracked = Crack.multi_thread_brute_force_attack(5, array);
 		String string = "";
@@ -84,7 +87,8 @@ public class CrackTest {
 			string += array2.toString();
 		System.out.print(array2.toString());
 		}
-		assertEquals("[[ and : be5d5d37542d75f93a87094459f76678 ]][][[ cat : d077f244def8a70e5ea758bd8352fcd8 ]][[ dog : 06d80eb0c50b49a509b49f2424e8c805 ]][][[ for : d55669822f1a8cf72ec1911e462a54eb ]][[ green : 9f27410725ab8cc8854a2769c7a516b8 ]][][][][][][][][[ on : ed2b5c0139cec8ad2873829dc1117d50 ]][][][[ ride : 059763450f095b4973b450eaf58399c1 ]][][][][[ van : 957d2fa52c19a5aff4ccf5d9a959adab ]][[ went : dd22b70914cd2243e055d2e118741186 ]][][][]",string);
+		// Outcomes checked w/ reverse MD5 tools.
+		assertEquals("[[ a : 0cc175b9c0f1b6a831c399e269772661 ], [ and : be5d5d37542d75f93a87094459f76678 ]][][[ cat : d077f244def8a70e5ea758bd8352fcd8 ]][[ dog : 06d80eb0c50b49a509b49f2424e8c805 ]][][[ for : d55669822f1a8cf72ec1911e462a54eb ]][[ green : 9f27410725ab8cc8854a2769c7a516b8 ]][][][][][][][][[ on : ed2b5c0139cec8ad2873829dc1117d50 ]][][][[ ride : 059763450f095b4973b450eaf58399c1 ]][][][][[ van : 957d2fa52c19a5aff4ccf5d9a959adab ]][[ went : dd22b70914cd2243e055d2e118741186 ]][][][]",string);
 		
 	}
 

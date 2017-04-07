@@ -3,8 +3,6 @@
  */
 package hash_tables;
 
-import java.util.ArrayList;
-
 /**
  * Hash table implementation that uses MD5 hashing and probes collisions by
  * adding quadratic values.
@@ -14,18 +12,28 @@ import java.util.ArrayList;
  */
 public class Hash_Table_Quadtratic_Probing<KeyType, ValueType> extends Hash_Table_Linear_Probing<KeyType, ValueType> {
 
+	/**
+	 * Construct a new Hash Table w/ quadratic probing.
+	 * 
+	 * @param initial_capacity
+	 *            - initial capacity of the table.
+	 */
 	public Hash_Table_Quadtratic_Probing(int initial_capacity) {
 		super(initial_capacity);
-		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
-	 * Quadratic probing method, moves our counter forward by increasing amounts each time.
+	 * Quadratic probing method, moves our counter forward by increasing amounts
+	 * each time.
+	 * 
+	 * @param index
+	 *            - index to probe from.
 	 */
 	@Override
 	public int probe(int index) {
 		this.probeCount++;
+		// Probe by squaring our constant and then adding.
 		return (int) (index + Math.pow(this.probeCount, 2));
 	}
-	
+
 }

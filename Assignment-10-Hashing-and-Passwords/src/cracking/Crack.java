@@ -143,6 +143,16 @@ public class Crack {
 	 */
 	public static void brute_force_attack(Collection<String> hashes, ArrayList<String> successes, StringBuilder so_far,
 			int depth, int max_length) {
+
+		// This checks the one size given we are using multi-threads, otherwise
+		// it is ignored.
+		if (so_far.length() == 1) {
+			String hashed = hash(so_far.toString()).toString();
+			if (hashes.contains(hashed)) {
+				successes.add("[ " + so_far + " : " + hashed + " ]");
+			}
+		}
+
 		for (char letter = 'a'; letter <= 'z'; letter++) {
 			// Add a letter at our current position.
 			so_far.append(letter);
