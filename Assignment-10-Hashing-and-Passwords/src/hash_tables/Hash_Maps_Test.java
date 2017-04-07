@@ -22,7 +22,11 @@ public class Hash_Maps_Test {
 		// Change which is commented to test different implementations of
 		// Hash_Map.
 		//hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
+<<<<<<< HEAD
 		// hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
+=======
+		//hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
+>>>>>>> branch 'master' of https://andhaas1@bitbucket.org/markvandermerwe/hashing.git
 		hashMap = new Hash_Table_Chaining<String, Integer>(24);
 	}
 
