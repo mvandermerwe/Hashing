@@ -18,8 +18,15 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 	/** comment me */
 	private ArrayList<Pair<KeyType, ValueType>> table;
+
 	protected int capacity;
 	protected int num_of_entries;
+	private int collisions = 0;
+	private int operations = 0;
+
+	private boolean resizeable;
+	
+	protected int probeCount = 0;
 
 	/**
 	 * Hash Table Constructor
@@ -47,18 +54,45 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * print_stats().
 	 */
 	public void insert(KeyType key, ValueType value) {
-		// FIXME
+		this.operations++;
+
+		// Check if we need to resize and resize if necessary.
+		if (this.resizeable && this.num_of_entries > (.5 * this.capacity)) {
+			resize(Primes.next_prime(2 * this.capacity));
+		}
+
+		Pair<KeyType, ValueType> pair = new Pair<>(key, value);
+
+		int index = key.hashCode();
+
+		// Continue to probe until we find an empty bucket or the same key.
+		while (table.get(wrapIndex(index)) != null || !table.get(wrapIndex(index)).key.equals(key)) {
+			this.collisions++;
+			index = probe(index);
+		}
+		
+		this.probeCount = 0;
+
+		// Set pair will either replace or instantiate at this position.
+		table.set(wrapIndex(index), pair);
+		this.num_of_entries++;
+	}
+
+	public int wrapIndex(int index) {
+		return index % this.capacity;
 	}
 
 	/**
-	 * if doubling is off, then do not change table size in insert method
+	 * Function that probes linearly forward to find the next open bucket after
+	 * a collision.
 	 * 
-	 * @param on
-	 *            - turns doubling on (the default value for a hash table should
-	 *            be on)
+	 * @param index
+	 *            - index of collision.
+	 * @return - next 'bucket' after collision index to place pair.
 	 */
-	public void doubling_behavior(boolean on) {
-		// FIXME:
+	public int probe(int index) {
+		this.probeCount++;
+		return index + this.probeCount;
 	}
 
 	/**
@@ -69,8 +103,16 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * print_stats().
 	 */
 	public ValueType find(KeyType key) {
-		// FIXME
-		return null;
+		this.operations++;
+
+		int index = key.hashCode();
+		while (table.get(wrapIndex(index)) == null || !table.get(wrapIndex(index)).key.equals(key)) {
+			this.collisions++;
+			index = probe(index);
+		}
+
+		Pair<KeyType, ValueType> pair = table.get(wrapIndex(index));
+		return pair.value;
 	}
 
 	/**
@@ -86,8 +128,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * Returns the capacity of the hash table.
 	 */
 	public int capacity() {
-		// FIXME: return the number of total buckets
-		return 0;
+		return this.capacity;
 	}
 
 	/**
@@ -95,8 +136,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * stored key-value pairs).
 	 */
 	public int size() {
-		// FIXME: return the number of filled buckets
-		return 0;
+		return this.num_of_entries;
 	}
 
 	/**
@@ -126,30 +166,34 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 *
 	 */
 	public void reset_stats() {
-		// FIXME: insert code
+		this.collisions = 0;
+		this.num_of_entries = 0;
+		this.operations = 0;
 	}
 
 	/**
 	 * Clear the hash table array and initializes all of the entries in the
 	 * table to null.
-	 * 
-	 * 
 	 */
 	private void init_table() {
-		// FIXME:
 		// 1) build an array list of CAPACITY null values
 		// note 1: create an initial array list (which will have a size 0) but
 		// set the capacity to CAPACITY
 		// note 2: then, you must explicitly insert nulls into the array list
 		// CAPACITY times
 		// 2) set the number of elements in the hash table to 0
+
+		table = new ArrayList<Pair<KeyType, ValueType>>(capacity);
+		for (int index = 0; index < table.size(); index++) {
+			table.set(index, null);
+		}
 	}
 
 	/**
-	 * 
+	 * Set whether or not the hash map will resize when it reaches half full.
 	 */
 	public void set_resize_allowable(boolean status) {
-		// FIXME:
+		this.resizeable = status;
 	}
 
 	/**
@@ -164,7 +208,22 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * Note: make sure if you change the size, you rebuild your statistics...
 	 */
 	public void resize(int new_size) {
-		// FIXME: write code
+		ArrayList<Pair<KeyType, ValueType>> old = table;
+
+		// Set new size and reset stats.
+		this.capacity = new_size;
+		this.reset_stats();
+
+		init_table();
+
+		// For every pair from the old ArrayList that is non null, rehash into
+		// new one.
+		for (Pair<KeyType, ValueType> pair : old) {
+			if (pair != null) {
+				this.insert(pair.key, pair.value);
+			}
+		}
+
 	}
 
 }

@@ -19,4 +19,13 @@ public class Hash_Table_Quadtratic_Probing<KeyType, ValueType> extends Hash_Tabl
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * Quadratic probing method, moves our counter forward by increasing amounts each time.
+	 */
+	@Override
+	public int probe(int index) {
+		this.probeCount++;
+		return (int) (index + Math.pow(this.probeCount, 2));
+	}
+	
 }
