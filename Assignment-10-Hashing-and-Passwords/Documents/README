@@ -1,0 +1,47 @@
+Your Name: Andrew Haas
+Your UID: u0493118
+The Date: 04/7/2017
+The Class Number: CS 2420
+The Assignment Number: 10
+Your partner name (when appropriate): Mark Van der Merwe, u0920663
+
+I pledge that the work done here was my own and that I have learned how to write
+this program (such that I could throw it out and restart and finish it in a timely
+manner).  I am not turning in any work that I cannot understand, describe, or
+recreate.  Any sources (e.g., web sites) other than the lecture that I used to
+help write the code are cited in my work.  When working with a partner, I have
+contributed an equal share and understand all the submitted work.  Further, I have
+helped write all the code assigned as pair-programming and reviewed all code that
+was written separately.
+	                      (Mark Van der Merwe, Andrew Haas)
+ 
+Project Summary: 
+	- Create a program to solve a password from a given hash. Be able to insert the password
+	into an array.
+	  
+Design Decisions :
+	- We decided to use the recursive helper method for the brute_force_attack.
+	
+	- We decided to use Java's built in LinkedList in Hash_Table_Chaining.
+	  
+	- We used a wrap method to make sure the indices wrap around the array for the 
+	Hash_Tables.
+	  
+Notes To the TA: 
+	-We decided to convert everything to strings to simplify our testing of Crack.java.
+	
+	- We made our testing of the Hash_Table classes be all in one file so that
+	we could easily switch between which one we are testing.
+
+Problem We Faced/Encountered: 
+	- One problem that we face was that we were getting a lot of array index out of 
+	bounds errors. We solved this by changing our while statement in insert and find to check if the 
+	index in the array was null, and if it wasn't then we did another check to see if the values were the same.
+	
+	- Another problem we encountered was while we were testing Crack.java, we had difficulty trying to test
+	if the values were correctly being added to the ArrayList of ArrayLists. We solved this by creating a 
+	string that represents the values and then compared that to the output in string form.
+	  
+	
+	  
+	   
