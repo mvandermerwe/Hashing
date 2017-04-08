@@ -16,6 +16,7 @@ import org.junit.Test;
 public class Hash_Maps_Test {
 
 	private Hash_Map<String, Integer> hashMap;
+	private Hash_Map<String, Integer> oneMap;
 
 	@Before
 	public void setUp() {
@@ -24,6 +25,11 @@ public class Hash_Maps_Test {
 		hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
 		// hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
 		// hashMap = new Hash_Table_Chaining<String, Integer>(24);
+
+		oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
+		// oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
+		// oneMap = new Hash_Table_Chaining<String, Integer>(1);
+		oneMap.insert(String.valueOf(1), 1);
 	}
 
 	/**
@@ -44,6 +50,8 @@ public class Hash_Maps_Test {
 		hashMap.insert("one", 1);
 
 		assertEquals(1, hashMap.size());
+
+		assertEquals(1, oneMap.size());
 	}
 
 	/**
@@ -59,6 +67,15 @@ public class Hash_Maps_Test {
 
 		// Make sure five elements have been added.
 		assertEquals(5, hashMap.size());
+
+		// Make sure only adds as many as spaces given full array.
+		oneMap.set_resize_allowable(false);
+		oneMap.clear();
+		oneMap.resize(Primes.next_prime(8));
+		for (int index = 0; index < 13; index++) {
+			oneMap.insert(String.valueOf(index+1), index);
+		}
+		assertEquals(11, oneMap.size());
 	}
 
 	@Test
@@ -76,8 +93,10 @@ public class Hash_Maps_Test {
 
 		// Test finding something that isn't there.
 		assertEquals(null, hashMap.find("nothere"));
-		
-		System.out.println(hashMap.toString());
+
+		// System.out.println(hashMap.toString());
+
+		assertEquals(1, (int) oneMap.find(String.valueOf(1)));
 	}
 
 	@Test
@@ -90,11 +109,14 @@ public class Hash_Maps_Test {
 
 		// Check size before clear.
 		assertEquals(5, hashMap.size());
-
 		hashMap.clear();
-
 		// Check size to make sure we cleared values.
 		assertEquals(0, hashMap.size());
+
+		// Check size of one size, then clear and make sure.
+		assertEquals(1, oneMap.size());
+		oneMap.clear();
+		assertEquals(0, oneMap.size());
 	}
 
 	@Test
@@ -111,21 +133,21 @@ public class Hash_Maps_Test {
 			hashMap.insert(String.valueOf(index), index);
 		}
 
-		if(hashMap instanceof Hash_Table_Chaining) {
+		if (hashMap instanceof Hash_Table_Chaining) {
 			assertEquals(Primes.next_prime(58), hashMap.capacity());
 		} else {
 			assertEquals(Primes.next_prime(520), hashMap.capacity());
 		}
-		
+
 	}
-	
+
 	@Test
 	public void testToString() {
 		for (int index = 0; index < 120; index++) {
 			hashMap.insert(String.valueOf(index), index);
 		}
 		System.out.print(hashMap.toString());
-		
+
 	}
 
 }

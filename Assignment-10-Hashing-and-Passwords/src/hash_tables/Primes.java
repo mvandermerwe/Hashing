@@ -38,7 +38,9 @@ public class Primes
 	 */
 	public static int next_prime( int value )
 	{
-		for(int i = value; i< value*2 -2; i++) { //Bertrand's postulate
+		
+		
+		for(int i = value; i< value*2; i++) { //Bertrand's postulate
 			if(is_prime(i)){
 				return i;
 			}

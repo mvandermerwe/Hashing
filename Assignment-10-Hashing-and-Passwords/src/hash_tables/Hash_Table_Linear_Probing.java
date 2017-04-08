@@ -90,7 +90,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 		while ((table.get(wrapIndex(index)) == null) ? false : !table.get(wrapIndex(index)).key.equals(key)) {
 			this.collisions++;
 			this.bucketChecks++;
-			index = probe(index);
+			index = Math.abs(probe(index));
 
 			// If probe count reaches capacity, no more room in the table.
 			if (this.probeCount == this.capacity) {
@@ -129,7 +129,11 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 */
 	public int probe(int index) {
 		this.probeCount++;
-		return index + this.probeCount;
+		index = index + this.probeCount;
+		if(index >= Integer.MAX_VALUE) {
+			index = index/2;
+		}
+		return index;
 	}
 
 	/**

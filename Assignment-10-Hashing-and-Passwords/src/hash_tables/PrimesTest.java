@@ -32,6 +32,7 @@ public class PrimesTest {
 		assertEquals(13, Primes.next_prime(12));
 		assertEquals(7, Primes.next_prime(6));
 		assertEquals(3, Primes.next_prime(3));
+		assertEquals(1, Primes.next_prime(1));
 		assertEquals(-1, Primes.next_prime(-5));
 		
 	}
