@@ -78,6 +78,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		Pair<KeyType,ValueType> pair = new Pair<KeyType,ValueType>(key, value);
 		num_of_entries++;
 		if(array.get(wrap(index))!=null && this.find(key)!=null){
+			this.bucketChecks++;
 		for(Pair<KeyType,ValueType> newpair: array.get(wrap(index))){
 			if(newpair.equals(pair)){
 				newpair=pair;
@@ -106,6 +107,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		hash_num++;
 		long hash_end_time = System.nanoTime();
 		hash_time += (hash_end_time-hash_start_time);
+		this.bucketChecks++;
 		if(array.get(wrap(index))!=null){
 			for(Pair<KeyType,ValueType> newpair: array.get(wrap(index))){
 				collisions++;
@@ -197,7 +199,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	public ArrayList<Double> print_stats() {
 		ArrayList<Double> stats = new ArrayList<Double>();
 		// Calculates collisions per bucket check.
-		stats.add(( (double) this.collisions / (double) (this.bucketChecks)));
+		stats.add(( (double) this.collisions / (double) this.bucketChecks));
 		//
 		stats.add((double) this.hash_time / (double) this.hash_num);
 		//
