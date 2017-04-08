@@ -4,6 +4,7 @@
 package cracking;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import hash_tables.Hash_Map;
 import hash_tables.Hash_Table_Chaining;
@@ -24,7 +25,11 @@ public class Testing {
 		Hash_Map<String, Integer> hashMap2= new Hash_Table_Quadtratic_Probing<String, Integer>(1000);
 		Hash_Map<String, Integer>	hashMap3 = new Hash_Table_Chaining<String, Integer>(1000);
 		hashMap.set_resize_allowable(false);
-		for(int i = 0; i<array.size();i++){
+		for(int i = 1; i<array.size();i++){
+			String line = array.get(i);
+			
+			Scanner scanner = new Scanner(line);
+			
 			hashMap.insert(array.get(i)+array.get(i+1), Integer.parseInt(array.get(i+2)));
 			hashMap2.insert(array.get(i)+array.get(i+1), Integer.parseInt(array.get(i+2)));
 		}
