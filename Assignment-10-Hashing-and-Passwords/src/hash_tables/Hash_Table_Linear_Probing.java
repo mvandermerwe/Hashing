@@ -93,7 +93,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 			index = Math.abs(probe(index));
 
 			// If probe count reaches capacity, no more room in the table.
-			if (this.probeCount == this.capacity) {
+			if (this.probeCount >= this.capacity) {
 				return;
 			}
 		}
@@ -140,8 +140,9 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * Search for an item in the hash table, using the given "key". Return the
 	 * item if it exists in the hash table. Otherwise, returns null.
 	 * 
-	 * FIXME: Make sure you collect statistics in this method. See
-	 * print_stats().
+	 * @param key
+	 * 			-Key that we are looking for.
+	 * @return - The value of the pair that has the given key.
 	 */
 	public ValueType find(KeyType key) {
 		long startFindTime = System.nanoTime();
@@ -188,6 +189,8 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 	/**
 	 * Returns the capacity of the hash table.
+	 * 
+	 * @return - The capacity of the array.
 	 */
 	public int capacity() {
 		return this.capacity;
@@ -196,13 +199,15 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	/**
 	 * Returns the number of entries in the hash table (i.e., the number of
 	 * stored key-value pairs).
+	 * 
+	 *  @return - The number of entries in the array.
 	 */
 	public int size() {
 		return this.num_of_entries;
 	}
 
 	/**
-	 * 
+	 * Calculates and adds the required statistics 
 	 */
 	public ArrayList<Double> print_stats() {
 		ArrayList<Double> stats = new ArrayList<Double>();
