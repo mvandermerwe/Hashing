@@ -17,17 +17,19 @@ public class Hash_Maps_Test {
 
 	private Hash_Map<String, Integer> hashMap;
 	private Hash_Map<String, Integer> oneMap;
-
+	/**
+	 * Sets up the Hash_Tables that are going to be used in the tests.
+	 */
 	@Before
 	public void setUp() {
 		// Change which is commented to test different implementations of
 		// Hash_Map.
-		hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
-		// hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
+		//hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
+		hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
 		// hashMap = new Hash_Table_Chaining<String, Integer>(24);
 
-		oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
-		// oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
+		//oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
+		oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
 		// oneMap = new Hash_Table_Chaining<String, Integer>(1);
 		oneMap.insert(String.valueOf(1), 1);
 	}
@@ -77,7 +79,11 @@ public class Hash_Maps_Test {
 		}
 		assertEquals(11, oneMap.size());
 	}
-
+	
+	/**
+	 * Tests the find method to make sure that it can find
+	 * and return the correct value of the pair it is looking for.
+	 */
 	@Test
 	public void testFind() {
 		hashMap.insert("one", 1);
@@ -98,7 +104,11 @@ public class Hash_Maps_Test {
 
 		assertEquals(1, (int) oneMap.find(String.valueOf(1)));
 	}
-
+	
+	/**
+	 * Tests the clear method to make sure it gets rid of all
+	 * elements in the array.
+	 */
 	@Test
 	public void testClear() {
 		hashMap.insert("one", 1);
@@ -119,6 +129,11 @@ public class Hash_Maps_Test {
 		assertEquals(0, oneMap.size());
 	}
 
+	/**
+	 * Tests the resize method to make sure that it correctly
+	 * resizes the array and then reinserts all of the 
+	 * pairs correctly.
+	 */
 	@Test
 	public void testResize() {
 		hashMap.resize(Primes.next_prime(48));
@@ -126,7 +141,11 @@ public class Hash_Maps_Test {
 		// resize then check capacity.
 		assertEquals(Primes.next_prime(48), hashMap.capacity());
 	}
-
+	
+	/**
+	 * Tests to make sure that the Resize array is being called
+	 * correctly when inserting a pair.
+	 */
 	@Test
 	public void testStartsResize() {
 		for (int index = 0; index < 150; index++) {
@@ -141,6 +160,10 @@ public class Hash_Maps_Test {
 
 	}
 
+	/**
+	 * Tests to make sure that the toString method correctly 
+	 * outputs the required data.
+	 */
 	@Test
 	public void testToString() {
 		for (int index = 0; index < 120; index++) {

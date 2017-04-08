@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -18,8 +17,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import hash_tables.Hash_Map;
 
 /**
  * Class that does several attempts to crack password files.
@@ -221,9 +218,9 @@ public class Crack {
 		long start_time = System.nanoTime();
 		System.out.println("starting computation");
 
-		ArrayList<Thread> threads = new ArrayList<>();
+		//ArrayList<Thread> threads = new ArrayList<>();
 
-		int count = 0;
+		//int count = 0;
 		int AVAILABLE_THREADS = 8;
 
 		// We let thread pool handle threading.
