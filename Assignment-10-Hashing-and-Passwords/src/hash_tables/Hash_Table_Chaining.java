@@ -195,6 +195,20 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	}
 	
 	/**
+	 * Resets the hash table stats.
+	 *
+	 */
+	public void reset_stats() {
+		this.collisions = 0;
+		this.num_of_entries = 0;
+		this.total_hashing_time = 0;
+		this.total_inserting_time = 0;
+		this.find_counter = 0;
+		this.total_finding_time = 0;
+		this.hash_counter = 0;
+	}
+	
+	/**
 	 * Replaces array for a new one of the given size and copies the
 	 * LinkedLists over.
 	 * @param new_size
