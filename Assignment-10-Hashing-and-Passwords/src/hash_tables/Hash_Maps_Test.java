@@ -21,9 +21,9 @@ public class Hash_Maps_Test {
 	public void setUp() {
 		// Change which is commented to test different implementations of
 		// Hash_Map.
-		//hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
+		hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
 		// hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
-		hashMap = new Hash_Table_Chaining<String, Integer>(24);
+		// hashMap = new Hash_Table_Chaining<String, Integer>(24);
 	}
 
 	/**
@@ -109,7 +109,12 @@ public class Hash_Maps_Test {
 			hashMap.insert(String.valueOf(index), index);
 		}
 
-		assertEquals(Primes.next_prime(58), hashMap.capacity());
+		if(hashMap instanceof Hash_Table_Chaining) {
+			assertEquals(Primes.next_prime(58), hashMap.capacity());
+		} else {
+			assertEquals(Primes.next_prime(520), hashMap.capacity());
+		}
+		
 	}
 	
 	@Test

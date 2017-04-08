@@ -30,7 +30,13 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 	// Stats on collisions and total ops.
 	private int collisions = 0;
-	private int operations = 0;
+	private int bucketChecks = 0;
+	private int find_num = 0;
+	private int insert_num = 0;
+	private long insert_time = (long) 0.0;
+	private long find_time = (long) 0.0;
+	private long hash_time = (long) 0.0;
+	private int hash_num = 0;
 
 	// Whether our table can grow.
 	private boolean resizeable = true;
@@ -61,7 +67,9 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * print_stats().
 	 */
 	public void insert(KeyType key, ValueType value) {
-		this.operations++;
+		long startInsertTime = System.nanoTime();
+
+		this.insert_num++;
 
 		// Check if we need to resize and resize if necessary.
 		if (this.resizeable && this.num_of_entries > (int) (.5 * this.capacity)) {
@@ -70,7 +78,10 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 		Pair<KeyType, ValueType> pair = new Pair<>(key, value);
 
+		this.hash_num++;
+		long startHashTime = System.nanoTime();
 		int index = key.hashCode();
+		this.hash_time += (System.nanoTime() - startHashTime);
 
 		// Continue to probe until we find an empty bucket or the same key.
 		// Lambda expression: if at index is null, add there, if not, check if
@@ -78,6 +89,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 		// there.
 		while ((table.get(wrapIndex(index)) == null) ? false : !table.get(wrapIndex(index)).key.equals(key)) {
 			this.collisions++;
+			this.bucketChecks++;
 			index = probe(index);
 
 			// If probe count reaches capacity, no more room in the table.
@@ -85,13 +97,15 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 				return;
 			}
 		}
-
+		this.bucketChecks++;
 		// Resets probing scaling num.
 		this.probeCount = 0;
 
 		// Set pair will either replace or instantiate at this position.
 		table.set(wrapIndex(index), pair);
 		this.num_of_entries++;
+
+		this.insert_time += (System.nanoTime() - startInsertTime);
 	}
 
 	/**
@@ -126,15 +140,22 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * print_stats().
 	 */
 	public ValueType find(KeyType key) {
-		this.operations++;
+		long startFindTime = System.nanoTime();
 
+		this.find_num++;
+
+		this.hash_num++;
+		long startHashTime = System.nanoTime();
 		int index = key.hashCode();
+		this.hash_time += (System.nanoTime() - startHashTime);
+		
 		// Lambda expression: if null, keep probing, if not null, check if our
 		// key is there, if yes grab, otherwise keep probing.
 		while ((table.get(wrapIndex(index)) == null) ? true : !table.get(wrapIndex(index)).key.equals(key)) {
 			if (table.get(wrapIndex(index)) != null) {
 				this.collisions++;
 			}
+			this.bucketChecks++;
 			index = probe(index);
 
 			// If probe count reaches capacity, the provided element doesn't
@@ -143,8 +164,12 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 				return null;
 			}
 		}
+		this.bucketChecks++;
 
 		Pair<KeyType, ValueType> pair = table.get(wrapIndex(index));
+
+		this.find_time += (System.nanoTime() - startFindTime);
+
 		return pair.value;
 	}
 
@@ -176,19 +201,39 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * 
 	 */
 	public ArrayList<Double> print_stats() {
-		// FIXME: insert code
-		return null;
+		ArrayList<Double> stats = new ArrayList<Double>();
+		// Calculates collisions per bucket check.
+		stats.add(( (double) this.collisions / (double) (this.bucketChecks)));
+		//
+		stats.add((double) this.hash_time / (double) this.hash_num);
+		//
+		stats.add((double) this.insert_time / (double) this.insert_num);
+		//
+		stats.add((double) this.find_time / (double) this.find_num);
+		//
+		stats.add((double) this.size());
+		//
+		stats.add((double) this.capacity());
+		//
+		stats.add((double) this.size() / (double) this.capacity());
+		return stats;
 	}
 
 	/**
 	 * Fill in calculations to show some of the stats about the hash table
 	 */
 	public String toString() {
+		ArrayList<Double> stats = print_stats();
 		String result = new String();
-		result = "------------ Hash Table Info ------------\n" + "  Average collisions: "
-				+ (this.collisions / this.operations) + "  Average Hash Function Time: " + ""
-				+ "  Average Insertion Time: " + "  Average Find Time: " + "  Percent filled : " + "  Size of Table  : "
-				+ "  Elements       : " + "-----------------------------------------\n";
+		result = "------------ Hash Table Info ------------\n" 
+				+ "  Average collisions: " + stats.get(0) + "\n"
+				+ "  Average Hash Function Time: " + stats.get(1) + "\n"
+				+ "  Average Insertion Time: " + stats.get(2) + "\n"
+				+ "  Average Find Time: " + stats.get(3) + "\n"
+				+ "  Size of Table  : " + stats.get(4) + "\n"
+				+ "  Capacity of Table  :  " + stats.get(5) + "\n"
+				+ "  Percent filled : " + stats.get(6) + "\n"
+				+ "-----------------------------------------\n";
 
 		return result;
 
@@ -201,7 +246,12 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	public void reset_stats() {
 		this.collisions = 0;
 		this.num_of_entries = 0;
-		this.operations = 0;
+		this.bucketChecks = 0;
+		this.insert_num = 0;
+		this.insert_time = 0;
+		this.find_num = 0;
+		this.find_time = 0;
+		this.hash_num = 0;
 	}
 
 	/**
