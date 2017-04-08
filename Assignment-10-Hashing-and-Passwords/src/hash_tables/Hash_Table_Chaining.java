@@ -71,7 +71,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 			resize(Primes.next_prime(capacity *2));
 		}
 		long hash_start_time = System.nanoTime();
-		int index = key.hashCode();
+		int index = Math.abs(key.hashCode());
 		hash_num++;
 		long hash_end_time = System.nanoTime();
 		hash_time += (hash_end_time-hash_start_time);
@@ -102,7 +102,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		long find_start_time = System.nanoTime();
 		find_num++;
 		long hash_start_time = System.nanoTime();
-		int index = key.hashCode();
+		int index = Math.abs(key.hashCode());
 		hash_num++;
 		long hash_end_time = System.nanoTime();
 		hash_time += (hash_end_time-hash_start_time);

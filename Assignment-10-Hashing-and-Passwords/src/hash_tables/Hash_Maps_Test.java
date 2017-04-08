@@ -32,7 +32,7 @@ public class Hash_Maps_Test {
 
 		hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
 		//hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
-		// hashMap = new Hash_Table_Chaining<String, Integer>(24);
+		//hashMap = new Hash_Table_Chaining<String, Integer>(24);
 
 		oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
 		//oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
@@ -97,7 +97,7 @@ public class Hash_Maps_Test {
 		assertEquals(5, hashMap.size());
 
 		// Make sure only adds as many as spaces given full array.
-		if(!(hashMap instanceof Hash_Table_Chaining)) {
+		if(!(oneMap instanceof Hash_Table_Chaining)) {
 			oneMap.set_resize_allowable(false);
 			oneMap.clear();
 			oneMap.resize(11);

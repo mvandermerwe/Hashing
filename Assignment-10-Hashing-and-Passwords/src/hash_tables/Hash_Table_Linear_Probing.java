@@ -163,7 +163,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 			// If probe count reaches capacity, the provided element doesn't
 			// exist in the table.
-			if (this.probeCount > this.capacity) {
+			if (this.probeCount >= this.capacity) {
 				return null;
 			}
 		}
