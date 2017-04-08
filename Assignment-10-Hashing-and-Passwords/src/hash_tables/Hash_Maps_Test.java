@@ -34,8 +34,8 @@ public class Hash_Maps_Test {
 		//hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
 		//hashMap = new Hash_Table_Chaining<String, Integer>(24);
 
-		oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
-		//oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
+		//oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
+		oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
 		// oneMap = new Hash_Table_Chaining<String, Integer>(1);
 		oneMap.insert(String.valueOf(1), 1);
 	}

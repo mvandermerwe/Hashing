@@ -130,7 +130,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 */
 	public int probe(int index) {
 		this.probeCount++;
-		index = index + this.probeCount;
+		index = index + 1;
 		return index;
 	}
 
