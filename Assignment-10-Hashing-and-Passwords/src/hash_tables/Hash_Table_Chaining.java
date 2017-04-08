@@ -22,11 +22,12 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	protected int num_of_entries;
 	int collisions;
 	boolean resizeable;
-	long total_inserting_time = 0;
-	long total_hashing_time = 0;
-	int find_counter = 0;
-	int hash_counter = 0;
-	long total_finding_time = 0;
+	long insert_time = 0;
+	long hash_time = 0;
+	int find_num = 0;
+	int hash_num = 0;
+	long find_time = 0;
+	private int bucketChecks = 0;
 	/**
 	 * Hash Table Chaining Constructor
 	 * 
@@ -71,9 +72,9 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		}
 		long hash_start_time = System.nanoTime();
 		int index = key.hashCode();
-		hash_counter++;
+		hash_num++;
 		long hash_end_time = System.nanoTime();
-		total_hashing_time += (hash_end_time-hash_start_time);
+		hash_time += (hash_end_time-hash_start_time);
 		Pair<KeyType,ValueType> pair = new Pair<KeyType,ValueType>(key, value);
 		num_of_entries++;
 		if(array.get(wrap(index))!=null && this.find(key)!=null){
@@ -87,7 +88,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		}
 		array.get(wrap(index)).add(pair);
 		long insert_end_time = System.nanoTime();
-		total_inserting_time += (insert_end_time-insert_start_time);
+		insert_time += (insert_end_time-insert_start_time);
 	}
 	/**
 	 * This method checks if the array already has the 
@@ -99,25 +100,25 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	@Override
 	public ValueType find(KeyType key) {
 		long find_start_time = System.nanoTime();
-		find_counter++;
+		find_num++;
 		long hash_start_time = System.nanoTime();
 		int index = key.hashCode();
-		hash_counter++;
+		hash_num++;
 		long hash_end_time = System.nanoTime();
-		total_hashing_time += (hash_end_time-hash_start_time);
+		hash_time += (hash_end_time-hash_start_time);
 		if(array.get(wrap(index))!=null){
 			for(Pair<KeyType,ValueType> newpair: array.get(wrap(index))){
 				collisions++;
 				if(newpair.key.equals(key)){
 					collisions--;
 					long find_end_time = System.nanoTime();
-					total_finding_time += (find_end_time-find_start_time);
+					find_time += (find_end_time-find_start_time);
 					return newpair.value;
 				}
 			}
 		}
 		long find_end_time = System.nanoTime();
-		total_finding_time += (find_end_time-find_start_time);
+		find_time += (find_end_time-find_start_time);
 		return null;
 	}
 	
@@ -167,13 +168,17 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	 * Fill in calculations to show some of the stats about the hash table
 	 */
 	public String toString() {
-		String result = new String();
 		ArrayList<Double> stats = print_stats();
-		result = "------------ Hash Table Info ------------\n" + "Average collisions: " + stats.get(0)
-				+ "\nAverage Hash Function Time: " + total_hashing_time/hash_counter + "\nAverage Insertion Time: " +
-				total_inserting_time/num_of_entries + "\nAverage Find Time: " + total_finding_time/find_counter 
-				+ "\nPercent filled : " + 100*num_of_entries/(5*capacity) + "\nSize of Table  : "+ stats.get(2) + "\nElements       : "
-				+ stats.get(1) + "\n"+ "-----------------------------------------\n";
+		String result = new String();
+		result = "------------ Hash Table Info ------------\n" 
+				+ "  Average collisions: " + stats.get(0) + "\n"
+				+ "  Average Hash Function Time: " + stats.get(1) + "\n"
+				+ "  Average Insertion Time: " + stats.get(2) + "\n"
+				+ "  Average Find Time: " + stats.get(3) + "\n"
+				+ "  Size of Table  : " + stats.get(4) + "\n"
+				+ "  Capacity of Table  :  " + stats.get(5) + "\n"
+				+ "  Percent filled : " + stats.get(6) + "\n"
+				+ "-----------------------------------------\n";
 
 		return result;
 
@@ -188,9 +193,20 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	@Override
 	public ArrayList<Double> print_stats() {
 		ArrayList<Double> stats = new ArrayList<Double>();
-		stats.add((double)collisions/num_of_entries);
-		stats.add((double)num_of_entries);
-		stats.add((double)capacity);
+		// Calculates collisions per bucket check.
+		stats.add(( (double) this.collisions / (double) (this.bucketChecks)));
+		//
+		stats.add((double) this.hash_time / (double) this.hash_num);
+		//
+		stats.add((double) this.insert_time / (double) this.num_of_entries);
+		//
+		stats.add((double) this.find_time / (double) this.find_num);
+		//
+		stats.add((double) this.size());
+		//
+		stats.add((double) this.capacity());
+		//
+		stats.add((double) this.size() / (double) this.capacity());
 		return stats;
 	}
 	
@@ -201,11 +217,11 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	public void reset_stats() {
 		this.collisions = 0;
 		this.num_of_entries = 0;
-		this.total_hashing_time = 0;
-		this.total_inserting_time = 0;
-		this.find_counter = 0;
-		this.total_finding_time = 0;
-		this.hash_counter = 0;
+		this.hash_time = 0;
+		this.insert_time = 0;
+		this.find_num = 0;
+		this.find_time = 0;
+		this.hash_num = 0;
 	}
 	
 	/**
@@ -223,11 +239,11 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 			array.add(new LinkedList<Pair<KeyType,ValueType>>());
 		}
 		num_of_entries = 0;
-		total_inserting_time = 0;
-		total_hashing_time = 0;
-		find_counter = 0;
-		hash_counter = 0;
-		total_finding_time = 0;
+		insert_time = 0;
+		hash_time = 0;
+		find_num = 0;
+		hash_num = 0;
+		find_time = 0;
 		for(int i = 0; i<temparray.size();i++){
 			for(int j = 0; j<temparray.get(i).size(); j++){
 				Pair<KeyType,ValueType> temp_pair = temparray.get(i).get(j);
