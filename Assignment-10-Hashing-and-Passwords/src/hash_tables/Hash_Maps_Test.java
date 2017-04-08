@@ -22,13 +22,13 @@ public class Hash_Maps_Test {
 	public void setUp() {
 		// Change which is commented to test different implementations of
 		// Hash_Map.
-		hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
+		// hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
 		// hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
-		// hashMap = new Hash_Table_Chaining<String, Integer>(24);
+		hashMap = new Hash_Table_Chaining<String, Integer>(24);
 
-		oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
+		// oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
 		// oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
-		// oneMap = new Hash_Table_Chaining<String, Integer>(1);
+		oneMap = new Hash_Table_Chaining<String, Integer>(1);
 		oneMap.insert(String.valueOf(1), 1);
 	}
 
@@ -69,13 +69,15 @@ public class Hash_Maps_Test {
 		assertEquals(5, hashMap.size());
 
 		// Make sure only adds as many as spaces given full array.
-		oneMap.set_resize_allowable(false);
-		oneMap.clear();
-		oneMap.resize(Primes.next_prime(8));
-		for (int index = 0; index < 13; index++) {
-			oneMap.insert(String.valueOf(index+1), index);
+		if(!(hashMap instanceof Hash_Table_Chaining)) {
+			oneMap.set_resize_allowable(false);
+			oneMap.clear();
+			oneMap.resize(Primes.next_prime(8));
+			for (int index = 0; index < 13; index++) {
+				oneMap.insert(String.valueOf(index+1), index);
+			}
+			assertEquals(11, oneMap.size());
 		}
-		assertEquals(11, oneMap.size());
 	}
 
 	@Test
