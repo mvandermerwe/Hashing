@@ -80,7 +80,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 		this.hash_num++;
 		long startHashTime = System.nanoTime();
-		int index = key.hashCode();
+		int index = Math.abs(key.hashCode());
 		this.hash_time += (System.nanoTime() - startHashTime);
 
 		// Continue to probe until we find an empty bucket or the same key.
@@ -146,7 +146,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 		this.hash_num++;
 		long startHashTime = System.nanoTime();
-		int index = key.hashCode();
+		int index = Math.abs(key.hashCode());
 		this.hash_time += (System.nanoTime() - startHashTime);
 		
 		// Lambda expression: if null, keep probing, if not null, check if our
@@ -156,7 +156,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 				this.collisions++;
 			}
 			this.bucketChecks++;
-			index = probe(index);
+			index = Math.abs(probe(index));
 
 			// If probe count reaches capacity, the provided element doesn't
 			// exist in the table.

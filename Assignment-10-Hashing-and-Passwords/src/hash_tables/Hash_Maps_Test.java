@@ -76,6 +76,8 @@ public class Hash_Maps_Test {
 
 		// Test finding something that isn't there.
 		assertEquals(null, hashMap.find("nothere"));
+		
+		System.out.println(hashMap.toString());
 	}
 
 	@Test
