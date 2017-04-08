@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.junit.Test;
-
+/**
+ * Test the functionality of all of our Crack implementations.
+ * 
+ * @author Mark Van der Merwe and Andrew Haas
+ */
 public class CrackTest {
 
 	/**

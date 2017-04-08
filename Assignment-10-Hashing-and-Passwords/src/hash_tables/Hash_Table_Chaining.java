@@ -137,7 +137,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	
 	/**
 	 * Returns the capacity of the array.
-	 * @return this.capacity
+	 * @return - The capacity of the array.
 	 */
 	@Override
 	public int capacity() {
@@ -145,8 +145,8 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	}
 	
 	/**
-	 * Returns the number of elements in the array.
-	 * @return this.num_of_entries
+	 * Returns the number of entries in the array.
+	 * @return - Number of entries in the array.
 	 */
 	@Override
 	public int size() {
@@ -166,6 +166,8 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	
 	/**
 	 * Fill in calculations to show some of the stats about the hash table
+	 * 
+	 * @return result - The string containing all of the required data and stats.
 	 */
 	public String toString() {
 		ArrayList<Double> stats = print_stats();
@@ -188,7 +190,8 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 	/**
 	 * Returns an array of doubles containing the average collisions,
 	 * number of entries, and the capacity of the array.
-	 * @return stats	-array containing the previously stated data.
+	 * 
+	 * @return stats - array containing the previously stated data.
 	 */
 	@Override
 	public ArrayList<Double> print_stats() {

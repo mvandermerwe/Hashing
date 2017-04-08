@@ -11,8 +11,6 @@ import static hash_tables.Primes.next_prime;
  *         Represents a hash table of key-value pairs. Linear probing is used to
  *         handle conflicts.
  * 
- * 
- *         FIXME: You are to comment all functions and variables
  */
 public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<KeyType, ValueType> {
 
@@ -62,9 +60,12 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * number of elements is > 1/2 the capacity For Chaining Tables: double* the
 	 * size of the table if the average number of collisions is greater than 5.
 	 * *double --> double then choose next greatest prime
-	 * 
-	 * FIXME: Make sure you collect statistics in this method. See
-	 * print_stats().
+	 *
+	 * @param key
+	 * 			-The given KeyType
+	 * @param value
+	 * 			-The given ValueType
+	 *
 	 */
 	public void insert(KeyType key, ValueType value) {
 		long startInsertTime = System.nanoTime();
@@ -208,6 +209,8 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 	/**
 	 * Calculates and adds the required statistics 
+	 * 
+	 * @return stats - array containing the required data.
 	 */
 	public ArrayList<Double> print_stats() {
 		ArrayList<Double> stats = new ArrayList<Double>();
@@ -230,6 +233,8 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 	/**
 	 * Fill in calculations to show some of the stats about the hash table
+	 * 
+	 * @return result - The string containing all of the required data and stats.
 	 */
 	public String toString() {
 		ArrayList<Double> stats = print_stats();
@@ -283,6 +288,9 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 	/**
 	 * Set whether or not the hash map will resize when it reaches half full.
+	 * 
+	 * @param status
+	 * 			-boolean of what to change resizeable to.
 	 */
 	public void set_resize_allowable(boolean status) {
 		this.resizeable = status;
@@ -298,6 +306,9 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	 * table.
 	 * 
 	 * Note: make sure if you change the size, you rebuild your statistics...
+	 * 
+	 * @param new_size
+	 * 			-int representing the new size of the array.
 	 */
 	public void resize(int new_size) {
 		ArrayList<Pair<KeyType, ValueType>> old = table;
