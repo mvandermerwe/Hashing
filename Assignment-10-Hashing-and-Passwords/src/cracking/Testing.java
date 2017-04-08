@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import hash_tables.Hash_Table_Chaining;
+import hash_tables.Hash_Table_Linear_Probing;
+import hash_tables.Hash_Table_Quadtratic_Probing;
 import hash_tables.My_String;
 
 /**
@@ -19,7 +21,7 @@ import hash_tables.My_String;
 public class Testing {
 
 	public static void main(String[] args) {
-		runTest(true);
+		runTest(false);
 	}
 
 	public static void runTest(boolean resizable) {
@@ -29,14 +31,12 @@ public class Testing {
 		My_String[] names = new My_String[array.size()];
 		// Change which is commented to test different implementations of
 
-		for (int capacity = 10; capacity < 1000; capacity += 10) {
+		for (int capacity = 1000; capacity < 5000; capacity += 200) {
 			long startTime = System.nanoTime();
 			// Switch comments to run tests on different implementations.
-			// Hash_Table_Linear_Probing<My_String, Integer> hashMap = new
-			// Hash_Table_Linear_Probing<My_String, Integer>(capacity);
-			// Hash_Table_Quadtratic_Probing<My_String, Integer> hashMap = new Hash_Table_Quadtratic_Probing<My_String, Integer>(
-			//		capacity);
-			Hash_Table_Chaining<My_String, Integer> hashMap = new Hash_Table_Chaining<>(capacity);
+			//Hash_Table_Linear_Probing<My_String, Integer> hashMap = new Hash_Table_Linear_Probing<My_String, Integer>(capacity);
+			Hash_Table_Quadtratic_Probing<My_String, Integer> hashMap = new Hash_Table_Quadtratic_Probing<My_String, Integer>(capacity);
+			//Hash_Table_Chaining<My_String, Integer> hashMap = new Hash_Table_Chaining<>(capacity);
 			hashMap.set_resize_allowable(resizable);
 
 			Scanner scanner = null;
@@ -76,7 +76,7 @@ public class Testing {
 			System.out.println(hashMap.toString());
 		}
 
-		sendToFile(data, "Chaining.csv");
+		sendToFile(data, "Linear.csv");
 	}
 
 	/**

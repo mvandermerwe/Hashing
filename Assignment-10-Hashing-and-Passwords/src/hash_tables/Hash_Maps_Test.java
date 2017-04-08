@@ -30,13 +30,13 @@ public class Hash_Maps_Test {
 		// Change which is commented to test different implementations of
 		// Hash_Map.
 
-		hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
+		//hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
 		//hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
-		//hashMap = new Hash_Table_Chaining<String, Integer>(24);
+		hashMap = new Hash_Table_Chaining<String, Integer>(24);
 
 		//oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
-		oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
-		// oneMap = new Hash_Table_Chaining<String, Integer>(1);
+		//oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
+		oneMap = new Hash_Table_Chaining<String, Integer>(1);
 		oneMap.insert(String.valueOf(1), 1);
 	}
 	
@@ -58,6 +58,8 @@ public class Hash_Maps_Test {
 			// System.out.println(name);
 			hashMap.insert(name, info);
 		}
+		
+		System.out.println(hashMap.toString());
 	}
 
 	/**

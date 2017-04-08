@@ -248,6 +248,7 @@ public class Hash_Table_Chaining<KeyType, ValueType> implements Hash_Map<KeyType
 		hash_time = 0;
 		find_num = 0;
 		hash_num = 0;
+		this.bucketChecks = 0;
 		find_time = 0;
 		for(int i = 0; i<temparray.size();i++){
 			for(int j = 0; j<temparray.get(i).size(); j++){
