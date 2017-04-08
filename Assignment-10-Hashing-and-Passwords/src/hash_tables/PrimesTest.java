@@ -3,7 +3,11 @@ package hash_tables;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
+/**
+ * Test the functionality of all of our Prime implementations.
+ * 
+ * @author Mark Van der Merwe and Andrew Haas
+ */
 public class PrimesTest {
 	
 	/**
