@@ -34,10 +34,6 @@ public class Hash_Table_Quadtratic_Probing<KeyType, ValueType> extends Hash_Tabl
 		this.probeCount++;
 		// Probe by squaring our constant and then adding.
 		index = (int) ((long) index + (long) Math.pow(this.probeCount, 2));
-		
-		if(index >= Integer.MAX_VALUE) {
-			index = index/2;
-		}
 		return index;
 	}
 

@@ -94,7 +94,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 			index = Math.abs(probe(index));
 
 			// If probe count reaches capacity, no more room in the table.
-			if (this.probeCount >= this.capacity) {
+			if (this.probeCount > this.capacity) {
 				return;
 			}
 		}
@@ -131,9 +131,6 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 	public int probe(int index) {
 		this.probeCount++;
 		index = index + this.probeCount;
-		if(index >= Integer.MAX_VALUE) {
-			index = index/2;
-		}
 		return index;
 	}
 
@@ -166,7 +163,7 @@ public class Hash_Table_Linear_Probing<KeyType, ValueType> implements Hash_Map<K
 
 			// If probe count reaches capacity, the provided element doesn't
 			// exist in the table.
-			if (this.probeCount == this.capacity) {
+			if (this.probeCount > this.capacity) {
 				return null;
 			}
 		}

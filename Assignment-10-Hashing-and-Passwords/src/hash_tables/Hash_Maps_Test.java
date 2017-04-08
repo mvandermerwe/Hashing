@@ -5,8 +5,13 @@ package hash_tables;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import cracking.Crack;
 
 /**
  * Test the functionality of all of our Hash_Map implementations.
@@ -25,14 +30,34 @@ public class Hash_Maps_Test {
 		// Change which is commented to test different implementations of
 		// Hash_Map.
 
-		//hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
-		hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
+		hashMap = new Hash_Table_Linear_Probing<String, Integer>(24);
+		//hashMap = new Hash_Table_Quadtratic_Probing<String, Integer>(24);
 		// hashMap = new Hash_Table_Chaining<String, Integer>(24);
 
-		//oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
-		oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
+		oneMap = new Hash_Table_Linear_Probing<String, Integer>(1);
+		//oneMap = new Hash_Table_Quadtratic_Probing<String, Integer>(1);
 		// oneMap = new Hash_Table_Chaining<String, Integer>(1);
 		oneMap.insert(String.valueOf(1), 1);
+	}
+	
+	@Test
+	public void testNamesNoResize() {
+		hashMap.resize(79);
+		hashMap.set_resize_allowable(false);
+		
+		ArrayList<String> array = Crack.read_file_into_array("Resources/names");
+		
+		Scanner scanner;
+		for (int i = 1; i < array.size(); i++) {
+			String line = array.get(i);
+
+			scanner = new Scanner(line);
+
+			String name = new String(scanner.next() + " " + scanner.next());
+			Integer info = scanner.nextInt();
+			// System.out.println(name);
+			hashMap.insert(name, info);
+		}
 	}
 
 	/**
@@ -75,7 +100,7 @@ public class Hash_Maps_Test {
 		if(!(hashMap instanceof Hash_Table_Chaining)) {
 			oneMap.set_resize_allowable(false);
 			oneMap.clear();
-			oneMap.resize(Primes.next_prime(8));
+			oneMap.resize(11);
 			for (int index = 0; index < 13; index++) {
 				oneMap.insert(String.valueOf(index+1), index);
 			}
