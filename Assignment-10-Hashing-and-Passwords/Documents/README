@@ -43,6 +43,10 @@ Problem We Faced/Encountered:
 	- Another problem we encountered was while we were testing Crack.java, we had difficulty trying to test
 	if the values were correctly being added to the ArrayList of ArrayLists. We solved this by creating a 
 	string that represents the values and then compared that to the output in string form.
+	
+	-When making our own hash, we ran into a problem where adding two positive numbers would return the 
+	negative of them added. We solved this by figuring out that the problem was caused by exceeding the 
+	maximum int value and changing the int to a long. 
 	  
 	
 	  
