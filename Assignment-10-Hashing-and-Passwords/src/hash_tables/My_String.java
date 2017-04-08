@@ -27,14 +27,20 @@ public class My_String implements Comparable<My_String>
    * 
    * @return the hash code for the "value" field of the My_String
    */
-//  public int hashCode()
-//  {
-//      return this.value.length();
-//  }
   @Override
   public int hashCode()
   {
-      return this.value.hashCode();
+	  double total = 1.0;
+      for(int charAt = 0; charAt < this.value.length(); charAt++) {
+    	  int posInAlpha = this.value.charAt(charAt) - 'a' + 1;
+    	  total += posInAlpha * charAt * 31;
+      }
+      
+      total = total/ this.value.length();
+      
+      total += 31 * Math.sin(this.value.length() * Math.PI);
+      
+      return Math.abs((int) total);
   }
   
   /**
